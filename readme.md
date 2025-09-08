@@ -18,7 +18,7 @@ cd dev-env
 docker compose build
 ```
 
-as a result we will have image named `dev-env-asm32`
+as a result we will have image named `dev-env-assembly-asm32`
 
 ### 4. docker look for image built
 
@@ -27,7 +27,8 @@ docker image ls
 ```
 
 ```terminaloutput
-dev-env-asm32         latest     feac1f563065   3 weeks ago     514MB
+REPOSITORY                        TAG        IMAGE ID       CREATED         SIZE
+dev-env-assembly-asm32            latest     96b11ec93b94   3 weeks ago     514MB
 ```
 
 ### 5. start container
@@ -41,49 +42,34 @@ docker compose up -d
  ✔ Container dev-env-asm32-1  Started                                                                                                                                      0.1s 
 ```
 
-### 5. check if container running
+### 6. check if container running
 
 ```shell
 docker ps
 ```
 
 ```terminaloutput
-CONTAINER ID   IMAGE             COMMAND            CREATED          STATUS          PORTS     NAMES
-4156caae1a1e   dev-env-asm32     "sleep infinity"   22 seconds ago   Up 21 seconds             dev-env-asm32-1
+CONTAINER ID   IMAGE                    COMMAND            CREATED         STATUS         PORTS     NAMES
+2533aacc08d1   dev-env-assembly-asm32   "sleep infinity"   9 seconds ago   Up 9 seconds             dev-env-asm32-1
 ```
 
-### 6. jump into docker container
+### 7. jump into docker container
 
 ```shell
 docker exec -ti dev-env-asm32-1 zsh
 ```
 
-### 7. exit from container (when you finish your work)
-```shell
-exit
-```
-
-### 8. stop container after work (when you want to turn off your computer)
-```shell
-docker stop dev-env-asm32-1
-```
-
-### 9. remove unused docker container (in the end of the course)
-```shell
-docker image rm dev-env-asm32 --force
-```
-
 ## compile-related
 
-### 1. create/edit your asm file in your favorite editor
+### 8.1. create/edit your asm file in your favorite editor
 
-### 2. go to corresponding folder in the linux VM
+### 8.2. go to corresponding folder in the linux VM
 
 ```shell
 cd lessons/1
 ```
 
-### 2. compile
+### 8.3. compile
 
 ```shell
 nasm -f elf32 hello-world.asm -o hello-world.o
@@ -100,7 +86,7 @@ drwxr-xr-x 3 root root  96 Sep  8 09:14 ..
 -rw-r--r-- 1 root root 407 Sep  8 09:31 hello-world.asm
 -rw-r--r-- 1 root root 640 Sep  8 09:31 hello-world.o
 ```
-### 3. link (make executable)
+### 8.4. link (make executable)
 
 ```shell
 ld -m elf_i386 hello-world.o -o hello-world
@@ -115,7 +101,7 @@ ls -la
 -rw-r--r-- 1 root root  640 Sep  8 09:31 hello-world.o
 ```
 
-### 4. run!
+### 8.5. run !
 
 ```shell
 ./hello-world
@@ -125,3 +111,21 @@ ls -la
 Hello from Assembly!
 ```
 
+### 8.6. repeat, experiment, do more, enjoy
+
+## Docker-related
+
+### 9. exit from container (when you finish your work)
+```shell
+exit
+```
+
+### 10. stop container after work (when you want to turn off your computer)
+```shell
+docker stop dev-env-asm32-1
+```
+
+### 11. remove unused docker image (in the end of the course)
+```shell
+docker ps -a --filter "ancestor=dev-env-assembly-asm32" -q | xargs -r docker rm -f && docker rmi -f dev-env-assembly-asm32
+```
